@@ -18,12 +18,7 @@ int main(int argc, char *argv[])
 	}
 
 	QTextStream qStdout(stdout);
-	if(argc < 2)
-	{
-		qStdout << "This application requires at least one argument!";
-		return 0;
-	}
-	if(args[1] == "--help")
+	if(argc < 2 || args[1] == "--help")
 	{
 		qStdout << "Usage:\n" << args[0] << " <input directory path> <output directory path>\nOutput directory path is optional.\n";
 		return 0;
@@ -50,6 +45,7 @@ int main(int argc, char *argv[])
 		while(inStream.readLineInto(&buffer)) {
 			QStringList splitString = buffer.split(';');
 			if(splitString.size() >= 2) {
+				splitString[1] = splitString[1].replace('\"',QStringLiteral("\\\""));
 				outStream << ' ' << splitString[0] << ":0 \"" << splitString[1] << "\"\n";
 			}
 		}
